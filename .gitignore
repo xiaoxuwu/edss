@@ -1,0 +1,2 @@
+*.pyc
+student_showcase/api/migrations/**
