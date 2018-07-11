@@ -28,3 +28,26 @@ class Company(models.Model):
 
     def __str__(self):
         return self.company_name
+
+class Student(models.Model):
+    name = models.CharField(max_length=30)
+    major = models.CharField(max_length=30)
+    year = models.CharField(max_length=1)
+    email = models.CharField(max_length=30)
+
+    membership = models.PositiveSmallIntegerField(default=0)
+    # bit-wise or the clubs you are in
+    # 1 - TBP
+    # 2 - HKN
+    # 4 - XE
+    # 8 - UPE
+    # ... (can add more)
+
+    clearance = models.BooleanField(default=False)
+    resume = models.FileField(upload_to='resumes/')
+
+    #linked_in = models.CharField(max_length=50, blank=true)
+    attendance = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
