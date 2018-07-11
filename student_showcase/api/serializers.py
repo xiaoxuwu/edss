@@ -27,3 +27,9 @@ class CompanyAccountSerializer(serializers.ModelSerializer):
         user = User.objects.create(**validated_data)
         Company.objects.create(rep=user, **company_data)
         return user
+
+class StudentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Student
+        fields = '__all__'

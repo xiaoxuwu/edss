@@ -36,7 +36,7 @@ class Student(models.Model):
     email = models.CharField(max_length=30)
 
     membership = models.PositiveSmallIntegerField(default=0)
-    # bit-wise or the clubs you are in
+    # bit-wise OR the clubs you are in
     # 1 - TBP
     # 2 - HKN
     # 4 - XE
@@ -46,7 +46,7 @@ class Student(models.Model):
     clearance = models.BooleanField(default=False)
     resume = models.FileField(upload_to='resumes/')
 
-    #linked_in = models.CharField(max_length=50, blank=true)
+    linked_in = models.CharField(max_length=50, blank=true)
     attendance = models.BooleanField(default=False)
 
     def __str__(self):
