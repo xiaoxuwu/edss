@@ -30,10 +30,11 @@ class Company(models.Model):
         return self.company_name
 
 class Student(models.Model):
+    account = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
     year = models.CharField(max_length=1)
-    email = models.CharField(max_length=30)
+    # email already stored in User
 
     membership = models.PositiveSmallIntegerField(default=0)
     # bit-wise OR the clubs you are in
