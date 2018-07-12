@@ -30,11 +30,18 @@ class Company(models.Model):
         return self.company_name
 
 class Student(models.Model):
+    YEARS = (
+        ("1", "1"),
+        ("2", "2"),
+        ("3", "3"),
+        ("4", "4"),
+        ("5", "5")
+    )
+
     account = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
-    year = models.CharField(max_length=1)
-    # email already stored in User
+    # on frontend, have pulldown with engineering majors, option to type in other if needed
+    year = models.CharField(max_length=1, choices=YEARS)
 
     membership = models.PositiveSmallIntegerField(default=0)
     # bit-wise OR the clubs you are in
@@ -51,4 +58,5 @@ class Student(models.Model):
     attendance = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.account
+        #User __str__ defaults to username
