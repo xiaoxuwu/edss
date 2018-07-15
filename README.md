@@ -10,3 +10,6 @@ $ source dev_env/bin/activate
 $ cd student_showcase
 $ python manage.py runserver
 ```
+
+## Docker setup
+
