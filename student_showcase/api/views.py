@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from rest_framework.decorators import api_view
 from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
@@ -10,6 +11,14 @@ from django.contrib.auth.models import User
 from api.models import *
 from api.serializers import *
 import pdb
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return JsonResponse({
+    'api/': 'Access EDSS API.',
+    'admin/': 'Access EDSS API admin panel.',
+    'auth/': 'Authenticatication for EDSS API.',
+    }, status=200)
 
 class CompanyViewSet(viewsets.ModelViewSet):
     """

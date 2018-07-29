@@ -31,11 +31,11 @@ class Company(models.Model):
 
 class Student(models.Model):
     YEARS = (
-        ("1", "1"),
-        ("2", "2"),
-        ("3", "3"),
-        ("4", "4"),
-        ("5", "5")
+        ("1", "First Year"),
+        ("2", "Second Year"),
+        ("3", "Third Year"),
+        ("4", "Fourth Year"),
+        ("5", "Fifth Year")
     )
 
     account = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -54,7 +54,7 @@ class Student(models.Model):
     clearance = models.BooleanField(default=False)
     resume = models.FileField(upload_to='resumes/')
 
-    linked_in = models.CharField(max_length=50, blank=true)
+    linked_in = models.CharField(max_length=50, blank=True)
     attendance = models.BooleanField(default=False)
 
     def __str__(self):
