@@ -1,2 +1,3 @@
 *.pyc
+dev_env
 student_showcase/api/migrations/**
