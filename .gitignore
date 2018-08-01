@@ -1,3 +1,4 @@
 *.pyc
-dev_env
-student_showcase/api/migrations/**
+src/dev_env
+src/student_showcase/api/migrations/**
+src/student_showcase/web/staticfiles/**

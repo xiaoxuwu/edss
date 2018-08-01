@@ -46,5 +46,4 @@ ADD requirements.txt /code/
 RUN pip3 install -r requirements.txt
 
 ADD . /code/
-ADD ./src/student_showcase/api /code/src/student_showcase
 RUN chmod ug+x ./initialize.sh
