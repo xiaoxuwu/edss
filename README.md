@@ -1,5 +1,9 @@
 # edss
 
+## Docker Setup (`docker` branch)
+1. Install `docker` and `docker-compose`.
+2. run `make run` in the root directory (this one)
+
 ## Activate Environment (be in top root folder)
 ```
 # install python 3.6.+ and virtualenv if you haven't already

@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password -v ~/Downloads/edss/var/lib/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: pa55word
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    command: ./initialize.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
