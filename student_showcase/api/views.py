@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from rest_framework import permissions
 from rest_framework.decorators import api_view
 from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
@@ -20,16 +21,43 @@ def api_root(request, format=None):
     'auth/': 'Authenticatication for EDSS API.',
     }, status=200)
 
-class CompanyViewSet(viewsets.ModelViewSet):
-    """
-    RESTful API endpoint for Company
-    """
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
-    def create(self, request):
-        serializer = CompanyAccountSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        request.data['password'] = '*' * len(request.data['password'])
-        return JsonResponse({'request': request.data, 'status': 'created successfully'}, status=201)
+
+    def post(self, request):
+        new_user = request.data['student_data']
+        new_user['account'] = request.data['account']
+        return serializer_class.create(new_user)
+
+    def put(self, request):
+        try:
+            user = Student.object.get(request.data['id'])
+        except Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if "account" in request.data:
+            user.account = request.data['account']
+        if "major" in request.data:
+            user.major = request.data['major']
+        if "year" in request.data:
+            user.year = request.data['year']
+        if "membership" in request.data:
+            user.membership = request.data['membership']
+        if "clearance" in request.data:
+            user.clearance = request.data['clearance']
+        if "resume" in request.data:
+            user.resume = request.data['resume']
+        if "linked_in" in request.data:
+            user.linked_in = request.data['linked_in']
+        if "attendance" in request.data:
+            user.attendance = request.data['attendance']
+        return user
+
+    def get(self, request):
+        try:
+            user = Student.object.get(request.data['id'])
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return user

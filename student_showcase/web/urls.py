@@ -22,8 +22,8 @@ import api.views as api_view
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
-router.register(r'company', api_view.CompanyViewSet)
-# router.register(r'student', api_view.StudentViewSet)
+
+router.register(r'student', api_view.StudentViewSet)
 
 urlpatterns = [
     url(r'^$', api_view.api_root),

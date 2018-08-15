@@ -30,20 +30,12 @@ class CompanyAccountSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     account = UserSerializer()
-
     class Meta:
         model = Student
-        fields = '__all__'
-
-class StudentAccountSerializer(serializers.ModelSerializer):
-    student_data = StudentSerializer()
-
-    class Meta:
-        model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'student_data')
+        fields = ('account', 'major', 'year', 'membership', 'clearance', 'resume', 'linked_in', 'attendance')
 
     def create(self, validated_data):
-        student_data = validated_data.pop('student_data')
-        user = User.objects.create(**validated_data)
-        Student.objects.create(account=user, **student_data)
-        return user
+        account = validated_data.pop('account')
+        user = User.objects.create(**account)
+        student = Student.objects.create(account=user, **validated_data)
+        return student;
