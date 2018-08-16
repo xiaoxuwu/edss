@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from rest_framework import permissions
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
@@ -12,6 +12,10 @@ from django.contrib.auth.models import User
 from api.models import *
 from api.serializers import *
 import pdb
+import io
+import os
+import zipfile
+from django.conf import settings
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -33,7 +37,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def put(self, request):
         try:
-            user = Student.object.get(request.data['id'])
+            user = Student.object.get(account_id=request.data['id'])
         except Student.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -57,7 +61,46 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def get(self, request):
         try:
-            user = Student.object.get(request.data['id'])
+            user = Student.object.get(account_id=request.data['id'])
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return user
+
+    @action(detail=True)
+    def resume(self, request, pk):
+        try:
+            student = Student.objects.get(account_id=pk)
+            file = student.resume
+            name = student.account.last_name
+            response = HttpResponse(content=file)
+            response['Content-Type'] = 'application/pdf'
+            response['Content-Disposition'] = 'attachment; filename="%s.pdf"' % name
+            return response
+        except Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=False)
+    def resume(self, request):
+        students = Student.objects.all()
+
+        # print(settings.MEDIA_ROOT)
+        # zip_filename = 'resumes.zip'
+        # s = io.BytesIO()
+        # zf = zipfile.ZipFile(s, 'w')
+        # for student in students:
+        #     fpath = student.resume.path
+        #     fname = student.resume.name
+        #     print(fpath)
+        #     print(fname)
+        #     zf.write(fpath, fname)
+        # zf.close()
+        b = io.BytesIO()
+        zf = zipfile.ZipFile(b, 'w')
+        for student in students:
+            zf.write(student.resume.path, student.resume.name)
+        zf.close()
+
+        response = HttpResponse(content=b.getvalue());
+        response['Content-Type'] = 'application/x-zip-compressed'
+        response['Content-Disposition'] = 'attachment; filename="%s.zip"' % "resumes"
+        return response
