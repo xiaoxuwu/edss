@@ -83,17 +83,6 @@ class StudentViewSet(viewsets.ModelViewSet):
     def resume(self, request):
         students = Student.objects.all()
 
-        # print(settings.MEDIA_ROOT)
-        # zip_filename = 'resumes.zip'
-        # s = io.BytesIO()
-        # zf = zipfile.ZipFile(s, 'w')
-        # for student in students:
-        #     fpath = student.resume.path
-        #     fname = student.resume.name
-        #     print(fpath)
-        #     print(fname)
-        #     zf.write(fpath, fname)
-        # zf.close()
         b = io.BytesIO()
         zf = zipfile.ZipFile(b, 'w')
         for student in students:
