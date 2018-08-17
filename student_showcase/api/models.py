@@ -58,5 +58,5 @@ class Student(models.Model):
     attendance = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.account
+        return self.account.username
         #User __str__ defaults to username
