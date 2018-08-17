@@ -81,7 +81,6 @@ class StudentViewSet(viewsets.ModelViewSet):
         try:
             student = Student.objects.get(id=pk)
             self.check_object_permissions(request, student)
-            print(student)
             file = student.resume
             name = student.account.last_name
             response = HttpResponse(content=file)
