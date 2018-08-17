@@ -32,46 +32,49 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'list':
-            permission_classes = [ViewAllPermissions]
+            permission_classes = [ListPermissions]
         elif self.action == 'resumes':
-            permission_classes = [ViewAllPermissions]
+            permission_classes = [ListPermissions]
         elif self.action == 'retrieve':
-            permission_classes = [StudentPermissions]
+            permission_classes = [DetailPermissions]
         elif self.action == 'resume':
-            permission_classes = [StudentPermissions]
+            permission_classes = [DetailPermission]
+        elif self.action == 'update':
+            permission_classes = [AlterPermissions]
+        elif self.action == 'partial_update':
+            permission_classes = [AlterPermissions]
+        elif self.action == 'destroy':
+            permission_classes = [AlterPermissions]
         else:
             permission_classes = []
         return [permission() for permission in permission_classes]
 
-
-    # def post(self, request):
-    #     new_user = request.data['student_data']
-    #     new_user['account'] = request.data['account']
-    #     return serializer_class.create(new_user)
-    #
-    # def put(self, request):
-    #     try:
-    #         user = Student.objects.get(id=request.data['id'])
-    #     except Student.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-    #
-    #     if "account" in request.data:
-    #         user.account = request.data['account']
-    #     if "major" in request.data:
-    #         user.major = request.data['major']
-    #     if "year" in request.data:
-    #         user.year = request.data['year']
-    #     if "membership" in request.data:
-    #         user.membership = request.data['membership']
-    #     if "clearance" in request.data:
-    #         user.clearance = request.data['clearance']
-    #     if "resume" in request.data:
-    #         user.resume = request.data['resume']
-    #     if "linked_in" in request.data:
-    #         user.linked_in = request.data['linked_in']
-    #     if "attendance" in request.data:
-    #         user.attendance = request.data['attendance']
-    #     return user
+    def update(self, request, pk):
+        try:
+            user = Student.objects.get(id=pk)
+            self.check_object_permissions(request, user)
+        except Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if "major" in request.data:
+            user.major = request.data['major']
+        if "account" in request.data:
+            user.account = request.data['account']
+        if "major" in request.data:
+            user.major = request.data['major']
+        if "year" in request.data:
+            user.year = request.data['year']
+        if "membership" in request.data:
+            user.membership = request.data['membership']
+        if "clearance" in request.data:
+            user.clearance = request.data['clearance']
+        if "resume" in request.data:
+            user.resume = request.data['resume']
+        if "linked_in" in request.data:
+            user.linked_in = request.data['linked_in']
+        if "attendance" in request.data:
+            user.attendance = request.data['attendance']
+        user.save()
+        return Response(self.serializer_class(user).data, status=201)
 
     @action(detail=True)
     def resume(self, request, pk):
