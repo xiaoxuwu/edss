@@ -51,7 +51,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     #
     # def put(self, request):
     #     try:
-    #         user = Student.objects.get(account_id=request.data['id'])
+    #         user = Student.objects.get(id=request.data['id'])
     #     except Student.DoesNotExist:
     #         return Response(status=status.HTTP_404_NOT_FOUND)
     #
