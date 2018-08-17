@@ -26,6 +26,7 @@ def api_root(request, format=None):
     'auth/': 'Authenticatication for EDSS API.',
     }, status=200)
 
+
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -103,3 +104,20 @@ class StudentViewSet(viewsets.ModelViewSet):
         response['Content-Type'] = 'application/x-zip-compressed'
         response['Content-Disposition'] = 'attachment; filename="%s.zip"' % "resumes"
         return response
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    RESTful API endpoint for Company
+    """
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+    def create(self, request):
+        serializer = CompanyAccountSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        request.data['password'] = '*' * len(request.data['password'])
+        return JsonResponse({'request': request.data, 'status': 'created successfully'}, status=201)
+
+
+
